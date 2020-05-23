@@ -4,6 +4,8 @@ from .parse import xvg
 import mimicpy._global as _global
 import os
 
+# rms calculation using gromacs
+
 @PlotBoxDF
 def d(top, trr, selections):
     df_l = None
