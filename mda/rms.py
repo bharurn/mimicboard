@@ -4,7 +4,7 @@ import MDAnalysis as mda
 from MDAnalysis.analysis import align
 from MDAnalysis.analysis.rms import RMSF
 
-# mda rms
+# rms calculation from mda
 
 @PlotBoxDF
 def d(top, trr, selections):
