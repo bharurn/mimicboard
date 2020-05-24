@@ -25,14 +25,14 @@ def run(universe, sele1, sele2):
     _sele1 = []
     _sele2 = []
     time = []
-    dist = []
-    for u in universe:
-        a,b,c = ids_dist(u, sele1, sele2)
+    dist = np.empty(0)
+    for t in universe.trajectory:
+        a,b,c = ids_dist(universe, sele1, sele2)
         _sele1 += a
         _sele2 += b
-        time += [u.data['step']]*len(c)
-        dist = np.append(c,c2)
+        time += [t.data['step']]*len(c)
+        dist = np.append(dist, c)
     
     idx = pd.MultiIndex.from_arrays(arrays=[_sele1, _sele2, time], names=[sele1,sele2, "Time"])
-    s = pd.Series(data=c, index=idx)
+    s = pd.Series(data=dist, index=idx)
     return xr.DataArray.from_series(s)
