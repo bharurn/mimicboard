@@ -25,13 +25,12 @@ def d(top, trr, selections):
     df = pd.DataFrame(rmsd, columns=('Step', 'Time', *cols))
     return df.set_index(['Step', 'Time'])
 
-@PlotBoxDF(x_axis=['Name', 'ID'])
-def f(top, trr, selection, align_with='protein'):
-    u = mda.Universe(top, trr)
+#@PlotBoxDF(x_axis=['Name', 'ID'])
+def f(u, selection, align_with='protein'):
     align.AlignTraj(u, u, select=align_with, in_memory=True).run()
     
-    calphas = u.select_atoms(selection)
-    rmsfer = RMSF(calphas, verbose=True).run()
+    sele = u.select_atoms(selection)
+    rmsfer = RMSF(sele, verbose=True).run()
     
     x = [(a.name,a.id) for a in rmsfer.atomgroup.atoms]
     df = pd.DataFrame(x, columns=('Name', 'ID'))
