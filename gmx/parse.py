@@ -2,7 +2,7 @@ import mimicpy
 import re
 import pandas as pd
 import numpy as np
-from .dashboard import PlotBoxDF
+from ..dashboard import PlotBoxDF
 
 def xvg(xvg, readlabel=True):
     title = ''

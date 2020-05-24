@@ -17,7 +17,7 @@ class Analysis(mimicpy.core.base.BaseHandle):
         
         if len(extra_files) == 1 and extra_files[0].split('.')[1] == 'xvg':
             o = host.read(extra_files[0])
-            self.logger.write('xvg', f"============Running {cmd}============\n")
+            self.logger.write('xvg', f"==>XVG raw output from gmx {cmd}\n")
             self.logger.write('xvg', o)
             host.rm(extra_files[0])
             return xvg(o)
