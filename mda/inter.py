@@ -1,6 +1,8 @@
 import numpy as np
+import pandas as pd
+import xarray as xr
 
-def ids_dist(sele1, sele2, dist=3):
+def ids_dist(u, sele1, sele2, dist=3):
     mol = u.select_atoms(sele1)
     hyd = u.select_atoms(sele2)
     
@@ -18,3 +20,19 @@ def ids_dist(sele1, sele2, dist=3):
     conv = lambda atom: f"{atom.resid+1}{atom.resname}_{atom.name}"
     
     return list(map(conv, mol.atoms[ids[0]])), list(map(conv, hyd.atoms[ids[1]])), vals
+
+def run(universe, sele1, sele2):
+    _sele1 = []
+    _sele2 = []
+    time = []
+    dist = []
+    for u in universe:
+        a,b,c = ids_dist(u, sele1, sele2)
+        _sele1 += a
+        _sele2 += b
+        time += [u.data['step']]*len(c)
+        dist = np.append(c,c2)
+    
+    idx = pd.MultiIndex.from_arrays(arrays=[_sele1, _sele2, time], names=[sele1,sele2, "Time"])
+    s = pd.Series(data=c, index=idx)
+    return xr.DataArray.from_series(s)
