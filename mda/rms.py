@@ -1,4 +1,4 @@
-from mimicpy.analysis.dashboard import PlotBoxDF
+from ..dashboard import PlotBoxDF
 import pandas as pd
 import MDAnalysis as mda
 from MDAnalysis.analysis import align
