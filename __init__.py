@@ -1,3 +1,2 @@
 from . import mda
-from . import gmx
-from .analysis import Analysis
+from .gmx.analysis import Analysis
