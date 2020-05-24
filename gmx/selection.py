@@ -1,5 +1,3 @@
-from . import handlePDB as hpdb
-
 class Selection:
     
     lst = ['serial', 'name', 'resName', 'chainID', 'special']

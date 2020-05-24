@@ -1,5 +1,4 @@
-import mimicpy._global as _global
-from ..core.base import BaseHandle
+import mimicpy
 import re
 import pandas as pd
 from .dashboard import PlotBoxDF

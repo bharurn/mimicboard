@@ -1,14 +1,11 @@
 from ..dashboard import PlotBoxDF
-from mimicpy.simulate import BaseHandle
-from .parse import xvg
-import mimicpy._global as _global
+from ..parse import xvg
 import os
 
 # rms calculation using gromacs
 
 @PlotBoxDF
-def d(top, trr, selections):
-    gmx_hndl = BaseHandle()
+def d(top, trr, selections, gmx_hndl):
     df_l = None
     for l in trr:
         df = None
