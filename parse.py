@@ -24,21 +24,25 @@ def xvg(xvg, readlabel=True):
     
         reg = re.compile(r"@\s*s\w\s*legend\s*\"(.*?)\"", re.MULTILINE)
         
-        end = 0
-        cols = []
-        for m in reg.finditer(xvg):
-            end = m.end()
-            cols.append(ylabel+': '+m.groups()[0])
+        cols = [ylabel+': '+m.groups()[0] for m in reg.finditer(xvg)]
+            
+        if cols:
+            cols = [xlabel] + cols
+        else: cols = [xlabel, ylabel]
+            
+        reg = re.compile(r"@.*", re.MULTILINE)
         
-        cols = [xlabel] + cols
+        ends = [m.end() for m in reg.finditer(xvg)]
+        end = max(ends)
+                
     else:
         xlabel = 'X'
         ylabel = 'Y'
         
     data = xvg[end+1:]
-    ar = np.array(list(map(int, data.split())))
+    ar = np.array(list(map(float, data.split())))
     
-    reshaped = np.reshape(ar, (len(ar)//3,3))
+    reshaped = np.reshape(ar, (len(ar)//len(cols),len(cols)))
     df = pd.DataFrame(reshaped, columns=cols).set_index([xlabel])
     df.name = title
     return df
