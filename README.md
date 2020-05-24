@@ -1,2 +1,2 @@
 # mimicboard
-Dashboard for analysing and viewing MiMiC/Gromacs results
+Python package for data analysing of MiMiC/Gromacs trajectories and dashboard style viewing
