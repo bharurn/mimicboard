@@ -1,13 +1,19 @@
 import mimicpy
 import re
 import pandas as pd
+import numpy as np
 from .dashboard import PlotBoxDF
 
 def xvg(xvg, readlabel=True):
+    title = ''
     x = []
     y = []
     
     if readlabel:
+        reg = re.compile(r"@\s*title\s*\"(.*?)\"", re.MULTILINE).findall(xvg)
+        if reg == []: title = 'Title'
+        else: title = reg[0]
+            
         reg = re.compile(r"@\s*xaxis\s*label\s*\"(.*?)\"", re.MULTILINE).findall(xvg)
         if reg == []: xlabel = 'X Axis'
         else: xlabel = reg[0]
@@ -16,22 +22,25 @@ def xvg(xvg, readlabel=True):
         if reg == []: ylabel = 'Y Axis'
         else: ylabel = reg[0]
     
-        reg = re.compile(r"@\s*s0\s*legend\s*\"(.*?)\"", re.MULTILINE).findall(xvg)
-        if reg != []: ylabel = reg[0] + ' ' + ylabel
+        reg = re.compile(r"@\s*s\w\s*legend\s*\"(.*?)\"", re.MULTILINE)
+        
+        end = 0
+        cols = []
+        for m in reg.finditer(xvg):
+            end = m.end()
+            cols.append(ylabel+': '+m.groups()[0])
+        
+        cols = [xlabel] + cols
     else:
         xlabel = 'X'
         ylabel = 'Y'
+        
+    data = xvg[end+1:]
+    ar = np.array(list(map(int, data.split())))
     
-    for line in xvg.splitlines():
-        if line.startswith('#') or line.startswith('@'):
-            pass
-        else:
-            splt = line.split()
-            x.append(float(splt[0]))
-            y.append(float(splt[1]))
-    
-    df = pd.DataFrame(list(zip(x,y)), columns=(xlabel, ylabel))
-    
+    reshaped = np.reshape(ar, (len(ar)//3,3))
+    df = pd.DataFrame(reshaped, columns=cols).set_index([xlabel])
+    df.name = title
     return df
     
 def errors(file_eval=None):
