@@ -3,7 +3,7 @@ import pandas as pd
 import xarray as xr
 from tqdm.notebook import tqdm
 
-def ids_dist(u, sele1, sele2, dist=3):
+def ids_dist(u, sele1, sele2, cutoff=3):
     mol = u.select_atoms(sele1)
     hyd = u.select_atoms(sele2)
     
@@ -15,10 +15,10 @@ def ids_dist(u, sele1, sele2, dist=3):
     dist = np.sum(np.abs(reshaped)**2,axis=1)**(1./2)
     dist = dist.reshape(pos.shape[0], pos.shape[1])
     
-    ids = np.where(dist<3)
+    ids = np.where(dist<cutoff)
     vals = dist[ids]
     
-    conv = lambda atom: f"{atom.resid+1}{atom.resname}_{atom.name}"
+    conv = lambda atom: f"{atom.resid}{atom.resname}_{atom.name}"
     
     return list(map(conv, mol.atoms[ids[0]])), list(map(conv, hyd.atoms[ids[1]])), vals
 
