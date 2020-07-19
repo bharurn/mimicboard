@@ -1,2 +1,2 @@
 from . import mda
-from .gmx.analysis import Analysis
+from .gmx.analysis import Analysis, distributeFrames
